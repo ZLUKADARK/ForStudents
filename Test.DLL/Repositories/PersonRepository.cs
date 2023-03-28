@@ -5,13 +5,18 @@ using Test.Domain.Entities;
 
 namespace Test.DLL.Repositories
 {
-    public class PersonRepository : IRepository<Person>
+    public class PersonRepository : IPersonRepository
     {
         private readonly AppDBContext _db;
 
         public PersonRepository(AppDBContext db) 
         {
             _db = db;
+        }
+
+        public Person AddToAddress(Person person, Address address)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<Person> Create(Person entity)

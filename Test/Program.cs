@@ -15,9 +15,9 @@ builder.Services.AddTransient<IPersonServices, PersonServices>();
 builder.Services.AddTransient<IAddressServices, AddressServices>();
 builder.Services.AddTransient<ISocialClassServices, SocialClassServices>();
 
-builder.Services.AddScoped<IRepository<Address>, AddressRepository>();
-builder.Services.AddScoped<IRepository<Person>, PersonRepository>();
-builder.Services.AddScoped<IRepository<SocialClass>, SocialClassRepository>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<ISocialClassRepository, SocialClassRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

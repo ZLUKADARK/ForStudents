@@ -5,13 +5,18 @@ using Test.Domain.Entities;
 
 namespace Test.DLL.Repositories
 {
-    public class SocialClassRepository : IRepository<SocialClass>
+    public class SocialClassRepository : ISocialClassRepository
     {
         private readonly AppDBContext _db;
 
         public SocialClassRepository(AppDBContext db)
         {
             _db = db;
+        }
+
+        public SocialClass AddToPerson(SocialClass social, Person person)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<SocialClass> Create(SocialClass entity)
