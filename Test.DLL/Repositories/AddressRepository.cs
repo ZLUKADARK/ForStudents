@@ -14,9 +14,12 @@ namespace Test.DLL.Repositories
             _db = db;
         }
 
-        public Address AddToPerson(Address address, Person person)
+        public async Task<Address> AddToPerson(Address address, Person person)
         {
-            throw new NotImplementedException();
+            address.Person = new List<Person> { person };
+            await _db.Address.AddAsync(address);
+            await _db.SaveChangesAsync();
+            return address;
         }
 
         public async Task<Address> Create(Address entity)

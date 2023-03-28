@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Test.Domain.Entities;
 
 namespace Test.DLL.Interfaces
 {
-    internal interface ISocialClassRepository
+    public interface ISocialClassRepository : IRepository<SocialClass>
     {
+        public Task<SocialClass> AddToPerson(SocialClass social, Person person);
     }
 }
