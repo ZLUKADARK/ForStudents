@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Test.BLL.Interfaces;
+using Test.BLL.Services;
 using Test.DLL.Data;
 using Test.DLL.Interfaces;
 using Test.DLL.Repositories;
@@ -9,6 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Add services to the container.
+builder.Services.AddTransient<IPersonServices, PersonServices>();
+builder.Services.AddTransient<IAddressServices, AddressServices>();
+builder.Services.AddTransient<ISocialClassServices, SocialClassServices>();
+
 builder.Services.AddScoped<IRepository<Address>, AddressRepository>();
 builder.Services.AddScoped<IRepository<Person>, PersonRepository>();
 builder.Services.AddScoped<IRepository<SocialClass>, SocialClassRepository>();

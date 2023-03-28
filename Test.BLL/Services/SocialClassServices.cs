@@ -18,7 +18,6 @@ namespace Test.BLL.Services
         {
             var socialClass = new SocialClass 
             { 
-                Id = entity.Id, 
                 AverageIncome = entity.AverageIncome, 
                 Title = entity.Title 
             };
