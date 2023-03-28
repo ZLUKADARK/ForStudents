@@ -11,8 +11,8 @@ using Test.DLL.Data;
 namespace Test.DLL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20230305055822_V1")]
-    partial class V1
+    [Migration("20230328080451_socialdb")]
+    partial class socialdb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,21 @@ namespace Test.DLL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AddressPerson", b =>
+                {
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AddressId", "PersonId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("AddressPerson");
+                });
 
             modelBuilder.Entity("Test.Domain.Entities.Address", b =>
                 {
@@ -52,12 +67,7 @@ namespace Test.DLL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PersonId");
 
                     b.ToTable("Address");
                 });
@@ -113,15 +123,19 @@ namespace Test.DLL.Migrations
                     b.ToTable("SocialClass");
                 });
 
-            modelBuilder.Entity("Test.Domain.Entities.Address", b =>
+            modelBuilder.Entity("AddressPerson", b =>
                 {
-                    b.HasOne("Test.Domain.Entities.Person", "Person")
-                        .WithMany("Address")
-                        .HasForeignKey("PersonId")
+                    b.HasOne("Test.Domain.Entities.Address", null)
+                        .WithMany()
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Person");
+                    b.HasOne("Test.Domain.Entities.Person", null)
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Test.Domain.Entities.Person", b =>
@@ -133,11 +147,6 @@ namespace Test.DLL.Migrations
                         .IsRequired();
 
                     b.Navigation("SocialClass");
-                });
-
-            modelBuilder.Entity("Test.Domain.Entities.Person", b =>
-                {
-                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("Test.Domain.Entities.SocialClass", b =>

@@ -1,11 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using Test.DLL.Data;
+using Test.DLL.Interfaces;
+using Test.DLL.Repositories;
+using Test.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
+
+// Add services to the container.
+builder.Services.AddScoped<IRepository<Address>, AddressRepository>();
+builder.Services.AddScoped<IRepository<Person>, PersonRepository>();
+builder.Services.AddScoped<IRepository<SocialClass>, SocialClassRepository>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

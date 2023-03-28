@@ -5,11 +5,28 @@
 namespace Test.DLL.Migrations
 {
     /// <inheritdoc />
-    public partial class V1 : Migration
+    public partial class socialdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Address",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    District = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Home = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumberOfApartment = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "SocialClass",
                 columns: table => new
@@ -47,23 +64,23 @@ namespace Test.DLL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Address",
+                name: "AddressPerson",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    District = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Home = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NumberOfApartment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false),
                     PersonId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.PrimaryKey("PK_AddressPerson", x => new { x.AddressId, x.PersonId });
                     table.ForeignKey(
-                        name: "FK_Address_Person_PersonId",
+                        name: "FK_AddressPerson_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AddressPerson_Person_PersonId",
                         column: x => x.PersonId,
                         principalTable: "Person",
                         principalColumn: "Id",
@@ -71,8 +88,8 @@ namespace Test.DLL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Address_PersonId",
-                table: "Address",
+                name: "IX_AddressPerson_PersonId",
+                table: "AddressPerson",
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
@@ -85,6 +102,9 @@ namespace Test.DLL.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AddressPerson");
+
             migrationBuilder.DropTable(
                 name: "Address");
 
