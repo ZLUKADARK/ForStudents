@@ -7,7 +7,9 @@ namespace Test.BLL.Interfaces
         public Task<AddressDto> Create(AddressDto entity);
         public Task<AddressDto> Delete(int id);
         public Task<AddressDto> Update(AddressDto entity);
-        public Task<IEnumerable<AddressDto>> Get();
+        public Task<IEnumerable<AddressListDto>> Get();
         public Task<AddressDto> Get(int id);
+        public Task<AddressDto> AddToPerson(AddressAddToPerson addressAddToPerson);
+        public Task<AddressDto> CreateWithPerson(AddressDto entity);
     }
 }

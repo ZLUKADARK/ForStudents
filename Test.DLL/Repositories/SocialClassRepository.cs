@@ -14,9 +14,19 @@ namespace Test.DLL.Repositories
             _db = db;
         }
 
-        public SocialClass AddToPerson(SocialClass social, Person person)
+        public async Task<SocialClass> AddToPerson(SocialClass social, Person person)
         {
-            throw new NotImplementedException();
+            social.Person = new List<Person> { person };
+            try
+            {
+                await _db.SocialClass.AddAsync(social);
+                await _db.SaveChangesAsync();
+                return social;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<SocialClass> Create(SocialClass entity)
@@ -68,7 +78,10 @@ namespace Test.DLL.Repositories
         {
             try
             {
-                return await _db.SocialClass.FindAsync(id);
+                return await _db.SocialClass
+                    .Include(x => x.Person)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.Id == id);
             }
             catch (Exception ex)
             {

@@ -16,10 +16,18 @@ namespace Test.DLL.Repositories
 
         public async Task<Address> AddToPerson(Address address, Person person)
         {
-            address.Person = new List<Person> { person };
-            await _db.Address.AddAsync(address);
-            await _db.SaveChangesAsync();
-            return address;
+            try
+            {
+                var addressUpdate = _db.Entry<Address>(address);
+                addressUpdate.State = EntityState.Modified;
+                addressUpdate.Entity.Person.Add(person);
+                await _db.SaveChangesAsync();
+                return addressUpdate.Entity;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<Address> Create(Address entity)
@@ -29,6 +37,22 @@ namespace Test.DLL.Repositories
                 await _db.Address.AddAsync(entity);
                 await _db.SaveChangesAsync();
                 return entity;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<Address> CreateWithPersons(Address address)
+        {
+            try
+            {
+                _db.Person.AddRange(address.Person);
+                address.Person = address.Person;
+                await _db.Address.AddAsync(address);
+                await _db.SaveChangesAsync();
+                return address;
             }
             catch (Exception ex)
             {
@@ -59,7 +83,9 @@ namespace Test.DLL.Repositories
         {
             try
             {
-                return await _db.Address.ToListAsync();
+                return await _db.Address
+                    .AsNoTracking()
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -71,7 +97,10 @@ namespace Test.DLL.Repositories
         {
             try
             {
-                return await _db.Address.FindAsync(id);
+                return await _db.Address
+                    .AsNoTracking()
+                    .Include(x => x.Person)
+                    .FirstOrDefaultAsync(x => x.Id == id);
             }
             catch (Exception ex)
             {

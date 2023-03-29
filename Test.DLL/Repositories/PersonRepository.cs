@@ -14,9 +14,19 @@ namespace Test.DLL.Repositories
             _db = db;
         }
 
-        public Person AddToAddress(Person person, Address address)
+        public async Task<Person> AddToAddress(Person person, Address address)
         {
-            throw new NotImplementedException();
+            person.Address.Add(address);
+            try
+            {
+                await _db.AddAsync(person);
+                await _db.SaveChangesAsync();
+                return person;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<Person> Create(Person entity)
@@ -56,7 +66,9 @@ namespace Test.DLL.Repositories
         {
             try
             {
-                return await _db.Person.ToListAsync();
+                return await _db.Person
+                    .AsNoTracking()
+                    .ToListAsync();
             }
             catch(Exception ex)
             {
@@ -68,7 +80,11 @@ namespace Test.DLL.Repositories
         {
             try
             {
-                return await _db.Person.FindAsync(id);
+                return await _db.Person
+                    .AsNoTracking()
+                    .Include(x => x.SocialClass)
+                    .Include(x => x.Address)
+                    .FirstOrDefaultAsync(x => x.Id == id);
             }
             catch (Exception ex)
             {
@@ -84,7 +100,7 @@ namespace Test.DLL.Repositories
                 person.State = EntityState.Modified;
 
                 await _db.SaveChangesAsync();
-                return entity;
+                return person.Entity;
             }
             catch
             {

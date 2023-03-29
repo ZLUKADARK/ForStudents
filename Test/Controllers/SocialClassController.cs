@@ -16,7 +16,7 @@ namespace Test.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<SocialClassDto>> Get()
+        public async Task<IEnumerable<SocialClassListDto>> Get()
         {
             return await _services.Get();
         }

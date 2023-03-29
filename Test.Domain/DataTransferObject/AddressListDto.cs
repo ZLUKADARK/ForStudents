@@ -1,6 +1,6 @@
 ﻿namespace Test.Domain.DataTransferObject
 {
-    public class AddressDto
+    public class AddressListDto
     {
         public int Id { get; set; }
         public string Country { get; set; }
@@ -8,6 +8,5 @@
         public string District { get; set; }
         public string Home { get; set; }
         public string NumberOfApartment { get; set; }
-        public List<PersonDtoList>? Person { get; set; }
     }
 }

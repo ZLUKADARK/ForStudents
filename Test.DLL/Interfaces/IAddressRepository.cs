@@ -5,5 +5,6 @@ namespace Test.DLL.Interfaces
     public interface IAddressRepository : IRepository<Address>
     {
         public Task<Address> AddToPerson(Address address, Person person);
+        public Task<Address> CreateWithPersons(Address address);
     }
 }

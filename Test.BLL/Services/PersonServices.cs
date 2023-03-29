@@ -7,14 +7,49 @@ namespace Test.BLL.Services
 {
     public class PersonServices : IPersonServices
     {
-        private readonly IRepository<Person> _repository;
+        private readonly IPersonRepository _repository;
+        private readonly IAddressRepository _addressRepository;
 
-        public PersonServices(IRepository<Person> repository)
+        public PersonServices(IPersonRepository repository, IAddressRepository addressRepository)
         {
             _repository = repository;
+            _addressRepository = addressRepository;
         }
 
-        public async Task<PersonDto> Create(PersonDto entity)
+        public async Task<PersonDto> AddToAddress(AddressAddToPerson addressAddToPerson)
+        {
+            try
+            {
+                var result = await _repository.AddToAddress(
+                    await _repository.Get(addressAddToPerson.PersonId),
+                    await _addressRepository.Get(addressAddToPerson.AddressId));
+                return new PersonDto
+                {
+                    Id = result.Id,
+                    FirstName = result.FirstName,
+                    LastName = result.LastName,
+                    MiddleName = result.MiddleName,
+                    SocialClassId = result.SocialClassId,
+                    Address = (from a in result.Address
+                               select
+                               new AddressListDto
+                               {
+                                   Id = a.Id,
+                                   City = a.City,
+                                   NumberOfApartment = a.NumberOfApartment,
+                                   Country = a.Country,
+                                   District = a.District,
+                                   Home = a.Home,
+                               }).ToList()
+                };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<PersonDtoList> Create(PersonDtoList entity)
         {
             var person = new Person
             {
@@ -25,25 +60,9 @@ namespace Test.BLL.Services
                 SocialClassId = entity.SocialClassId,
             };
             var result = await _repository.Create(person);
-            return new PersonDto
+            return new PersonDtoList
             {
                 Id = result.Id,
-                Address = (from address in result.Address
-                           select new AddressDto
-                           {
-                               City = address.City,
-                               Country = address.Country,
-                               District = address.District,
-                               Home = address.Home,
-                               NumberOfApartment = address.NumberOfApartment,
-                               Id = address.Id,
-                           }).ToList(),
-                SocialClass = new SocialClassDto
-                {
-                    Id = result.SocialClass.Id,
-                    AverageIncome = result.SocialClass.AverageIncome,
-                    Title = result.SocialClass.Title
-                },
                 FirstName = result.FirstName,
                 LastName = result.LastName,
                 MiddleName = result.MiddleName,
@@ -51,28 +70,12 @@ namespace Test.BLL.Services
             };
         }
 
-        public async Task<PersonDto> Delete(int id)
+        public async Task<PersonDtoList> Delete(int id)
         {
             var result = await _repository.Delete(id);
-            return new PersonDto
+            return new PersonDtoList
             {
                 Id = result.Id,
-                Address = (from address in result.Address
-                           select new AddressDto
-                           {
-                               City = address.City,
-                               Country = address.Country,
-                               District = address.District,
-                               Home = address.Home,
-                               NumberOfApartment = address.NumberOfApartment,
-                               Id = address.Id,
-                           }).ToList(),
-                SocialClass = new SocialClassDto
-                {
-                    Id = result.SocialClass.Id,
-                    AverageIncome = result.SocialClass.AverageIncome,
-                    Title = result.SocialClass.Title
-                },
                 FirstName = result.FirstName,
                 LastName = result.LastName,
                 MiddleName = result.MiddleName,
@@ -80,29 +83,13 @@ namespace Test.BLL.Services
             };
         }
 
-        public async Task<IEnumerable<PersonDto>> Get()
+        public async Task<IEnumerable<PersonDtoList>> Get()
         {
             var result = await _repository.Get();
             return from results in result
-                   select new PersonDto
+                   select new PersonDtoList
                    {
                        Id = results.Id,
-                       Address = (from address in results.Address
-                                  select new AddressDto
-                                  {
-                                      City = address.City,
-                                      Country = address.Country,
-                                      District = address.District,
-                                      Home = address.Home,
-                                      NumberOfApartment = address.NumberOfApartment,
-                                      Id = address.Id,
-                                  }).ToList(),
-                       SocialClass = new SocialClassDto
-                       {
-                           Id = results.SocialClass.Id,
-                           AverageIncome = results.SocialClass.AverageIncome,
-                           Title = results.SocialClass.Title
-                       },
                        FirstName = results.FirstName,
                        LastName = results.LastName,
                        MiddleName = results.MiddleName,
@@ -117,7 +104,7 @@ namespace Test.BLL.Services
             {
                 Id = result.Id,
                 Address = (from address in result.Address
-                           select new AddressDto
+                           select new AddressListDto
                            {
                                City = address.City,
                                Country = address.Country,
@@ -126,7 +113,7 @@ namespace Test.BLL.Services
                                NumberOfApartment = address.NumberOfApartment,
                                Id = address.Id,
                            }).ToList(),
-                SocialClass = new SocialClassDto
+                SocialClass = new SocialClassListDto
                 {
                     Id = result.SocialClass.Id,
                     AverageIncome = result.SocialClass.AverageIncome,
@@ -139,7 +126,7 @@ namespace Test.BLL.Services
             };
         }
 
-        public async Task<PersonDto> Update(PersonDto entity)
+        public async Task<PersonDto> Update(PersonDtoList entity)
         {
             var person = new Person
             {
@@ -154,7 +141,7 @@ namespace Test.BLL.Services
             {
                 Id = result.Id,
                 Address = (from address in result.Address
-                           select new AddressDto
+                           select new AddressListDto
                            {
                                City = address.City,
                                Country = address.Country,
@@ -163,7 +150,7 @@ namespace Test.BLL.Services
                                NumberOfApartment = address.NumberOfApartment,
                                Id = address.Id,
                            }).ToList(),
-                SocialClass = new SocialClassDto
+                SocialClass = new SocialClassListDto
                 {
                     Id = result.SocialClass.Id,
                     AverageIncome = result.SocialClass.AverageIncome,
@@ -174,6 +161,11 @@ namespace Test.BLL.Services
                 MiddleName = result.MiddleName,
                 SocialClassId = result.SocialClassId,
             };
+        }
+
+        public Task<PersonDto> Update(PersonDto entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -7,11 +7,44 @@ namespace Test.BLL.Services
 {
     public class SocialClassServices : ISocialClassServices
     {
-        private readonly IRepository<SocialClass> _repository;
+        private readonly ISocialClassRepository _repository;
+        private readonly IPersonRepository _personRepository;
 
-        public SocialClassServices(IRepository<SocialClass> repository) 
+        public SocialClassServices(ISocialClassRepository repository, IPersonRepository personRepository) 
         {
             _repository = repository;
+            _personRepository = personRepository;
+        }
+
+        public async Task<SocialClassDto> AddToPerson(SocialClassAddToPerson socialClassAddToPerson)
+        {
+            
+            try
+            {
+                var result = await _repository.Get(socialClassAddToPerson.SocialClassId);
+                result.Person = new List<Person> { await _personRepository.Get(socialClassAddToPerson.PersonId) };
+                result = await _repository.Create(result);
+
+                return new SocialClassDto
+                {
+                    Id = result.Id,
+                    AverageIncome = result.AverageIncome,
+                    Title = result.Title,
+                    Person = (from results in result.Person select
+                              new PersonDtoList
+                              {
+                                  Id = results.Id,
+                                  FirstName = results.FirstName,
+                                  LastName = results.LastName,
+                                  SocialClassId = results.SocialClassId,
+                                  MiddleName = results.MiddleName,
+                              }).ToList()
+                };
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<SocialClassDto> Create(SocialClassDto entity)
@@ -41,11 +74,11 @@ namespace Test.BLL.Services
             };
         }
 
-        public async Task<IEnumerable<SocialClassDto>> Get()
+        public async Task<IEnumerable<SocialClassListDto>> Get()
         {
             var results = await _repository.Get();
             return from result in results select 
-                   new SocialClassDto
+                   new SocialClassListDto
                    {
                        Id = result.Id,
                        AverageIncome = result.AverageIncome,
@@ -60,7 +93,16 @@ namespace Test.BLL.Services
             {
                 Id = result.Id,
                 AverageIncome = result.AverageIncome,
-                Title = result.Title
+                Title = result.Title,
+                Person = (from resuts in result.Person select 
+                          new PersonDtoList 
+                          {
+                              Id = resuts.Id,
+                              FirstName = resuts.FirstName,
+                              LastName = resuts.LastName,
+                              MiddleName = resuts.MiddleName,
+                              SocialClassId = resuts.SocialClassId,
+                          }).ToList() 
             };
         }
 

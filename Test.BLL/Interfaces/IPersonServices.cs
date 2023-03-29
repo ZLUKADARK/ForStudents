@@ -4,10 +4,11 @@ namespace Test.BLL.Interfaces
 {
     public interface IPersonServices
     {
-        public Task<PersonDto> Create(PersonDto entity);
-        public Task<PersonDto> Delete(int id);
-        public Task<PersonDto> Update(PersonDto entity);
-        public Task<IEnumerable<PersonDto>> Get();
+        public Task<PersonDtoList> Create(PersonDtoList entity);
+        public Task<PersonDtoList> Delete(int id);
+        public Task<PersonDto> Update(PersonDtoList entity);
+        public Task<IEnumerable<PersonDtoList>> Get();
         public Task<PersonDto> Get(int id);
+        public Task<PersonDto> AddToAddress(AddressAddToPerson addressAddToPerson);
     }
 }

@@ -8,6 +8,6 @@
         public string District { get; set; }
         public string Home { get; set; }
         public string NumberOfApartment { get; set; }
-        public List<Person> Person { get; set; }
+        public List<Person> Person { get; set; } = new List<Person>();
     }
 }

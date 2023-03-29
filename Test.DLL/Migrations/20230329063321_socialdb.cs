@@ -95,8 +95,7 @@ namespace Test.DLL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Person_SocialClassId",
                 table: "Person",
-                column: "SocialClassId",
-                unique: true);
+                column: "SocialClassId");
         }
 
         /// <inheritdoc />

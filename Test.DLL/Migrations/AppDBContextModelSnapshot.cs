@@ -94,8 +94,7 @@ namespace Test.DLL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SocialClassId")
-                        .IsUnique();
+                    b.HasIndex("SocialClassId");
 
                     b.ToTable("Person");
                 });
@@ -138,8 +137,8 @@ namespace Test.DLL.Migrations
             modelBuilder.Entity("Test.Domain.Entities.Person", b =>
                 {
                     b.HasOne("Test.Domain.Entities.SocialClass", "SocialClass")
-                        .WithOne("Person")
-                        .HasForeignKey("Test.Domain.Entities.Person", "SocialClassId")
+                        .WithMany("Person")
+                        .HasForeignKey("SocialClassId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -148,8 +147,7 @@ namespace Test.DLL.Migrations
 
             modelBuilder.Entity("Test.Domain.Entities.SocialClass", b =>
                 {
-                    b.Navigation("Person")
-                        .IsRequired();
+                    b.Navigation("Person");
                 });
 #pragma warning restore 612, 618
         }
