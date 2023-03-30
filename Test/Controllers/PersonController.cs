@@ -20,7 +20,7 @@ namespace Test.Controllers
         {
             try
             {
-                return Ok(await _personServices.Get());
+                return Ok(await _personServices.GetAsync());
             }
             catch (Exception ex) 
             {
@@ -33,7 +33,7 @@ namespace Test.Controllers
         {
             try
             {
-                return Ok(await _personServices.Get(id));
+                return Ok(await _personServices.GetAsync(id));
             }
             catch (Exception ex)
             {
@@ -46,7 +46,7 @@ namespace Test.Controllers
         {
             try
             {
-                return Ok(await _personServices.Create(value));
+                return Ok(await _personServices.CreateAsync(value));
             }
             catch (Exception ex)
             {
@@ -55,14 +55,14 @@ namespace Test.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<PersonDto>> Put(int id, [FromBody] PersonDto value)
+        public async Task<ActionResult<PersonDto>> Put(int id, [FromBody] PersonDtoList value)
         {
             if(id != value.Id)
                 return BadRequest();
 
             try
             {
-                return Ok(await _personServices.Update(value));
+                return Ok(await _personServices.UpdateAsync(value));
             }
             catch (Exception ex)
             {
@@ -71,11 +71,11 @@ namespace Test.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<PersonDto>> Delete(int id)
+        public async Task<ActionResult<PersonDto>> DeleteAsync(int id)
         {
             try
             {
-                return Ok(await _personServices.Delete(id));
+                return Ok(await _personServices.DeleteAsync(id));
             }
             catch (Exception ex)
             {
@@ -88,7 +88,7 @@ namespace Test.Controllers
         {
             try
             {
-                return Ok(await _personServices.AddToAddress(value));
+                return Ok(await _personServices.AddToAddressAsync(value));
             }
             catch (Exception ex)
             {

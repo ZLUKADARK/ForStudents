@@ -16,12 +16,13 @@ namespace Test.DLL.Repositories
 
         public async Task<Person> AddToAddressAsync(Person person, Address address)
         {
-            person.Address.Add(address);
             try
             {
-                await _db.AddAsync(person);
+                var personState = _db.Entry<Person>(person);
+                personState.State = EntityState.Modified;
+                personState.Entity.Address.Add(address);
                 await _db.SaveChangesAsync();
-                return person;
+                return personState.Entity;
             }
             catch (Exception ex)
             {
@@ -98,7 +99,6 @@ namespace Test.DLL.Repositories
             {
                 var person = _db.Entry<Person>(entity);
                 person.State = EntityState.Modified;
-
                 await _db.SaveChangesAsync();
                 return person.Entity;
             }

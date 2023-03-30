@@ -42,7 +42,7 @@ namespace Test.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AddressDto>> Post([FromBody] AddressDto value)
+        public async Task<ActionResult<AddressListDto>> Post([FromBody] AddressListDto value)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace Test.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<AddressDto>> Put(int id, [FromBody] AddressDto value)
+        public async Task<ActionResult<AddressListDto>> Put(int id, [FromBody] AddressListDto value)
         {
             if(id != value.Id)
                 return BadRequest();

@@ -16,7 +16,7 @@ namespace Test.BLL.Services
             _personRepository = personRepository;
         }
 
-        public async Task<SocialClassDto> AddToPerson(SocialClassAddToPerson socialClassAddToPerson)
+        public async Task<SocialClassDto> AddToPersonAsync(SocialClassAddToPerson socialClassAddToPerson)
         {
             
             try
@@ -47,7 +47,7 @@ namespace Test.BLL.Services
             }
         }
 
-        public async Task<SocialClassDto> Create(SocialClassDto entity)
+        public async Task<SocialClassDto> CreateAsync(SocialClassDto entity)
         {
             var socialClass = new SocialClass 
             { 
@@ -63,7 +63,7 @@ namespace Test.BLL.Services
             };
         }
 
-        public async Task<SocialClassDto> Delete(int id)
+        public async Task<SocialClassDto> DeleteAsync(int id)
         {
             var result = await _repository.DeleteAsync(id);
             return new SocialClassDto
@@ -74,7 +74,7 @@ namespace Test.BLL.Services
             };
         }
 
-        public async Task<IEnumerable<SocialClassListDto>> Get()
+        public async Task<IEnumerable<SocialClassListDto>> GetAsync()
         {
             var results = await _repository.GetAsync();
             return from result in results select 
@@ -86,7 +86,7 @@ namespace Test.BLL.Services
                    };
         }
 
-        public async Task<SocialClassDto> Get(int id)
+        public async Task<SocialClassDto> GetAsync(int id)
         {
             var result = await _repository.GetAsync(id);
             return new SocialClassDto
@@ -106,7 +106,7 @@ namespace Test.BLL.Services
             };
         }
 
-        public async Task<SocialClassDto> Update(SocialClassDto entity)
+        public async Task<SocialClassDto> UpdateAsync(SocialClassDto entity)
         {
             var socialClass = new SocialClass
             {

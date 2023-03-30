@@ -78,7 +78,7 @@ namespace Test.BLL.Services
             }
         }
 
-        public async Task<AddressDto> CreateAsync(AddressDto entity)
+        public async Task<AddressListDto> CreateAsync(AddressListDto entity)
         {
             var address = new Address 
             { 
@@ -90,7 +90,7 @@ namespace Test.BLL.Services
                 Home = entity.Home,
             };
             var result = await _repository.CreateAsync(address);
-            return new AddressDto
+            return new AddressListDto
             {
                 Id = result.Id,
                 City = result.City,
@@ -232,7 +232,7 @@ namespace Test.BLL.Services
             }
         }
 
-        public async Task<AddressDto> UpdateAsync(AddressDto entity)
+        public async Task<AddressListDto> UpdateAsync(AddressListDto entity)
         {
             var address = new Address
             {
@@ -244,7 +244,7 @@ namespace Test.BLL.Services
                 Home = entity.Home,
             };
             var result = await _repository.UpdateAsync(address);
-            return new AddressDto
+            return new AddressListDto
             {
                 Id = result.Id,
                 City = result.City,

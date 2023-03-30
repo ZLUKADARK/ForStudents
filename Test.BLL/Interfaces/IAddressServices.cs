@@ -5,9 +5,9 @@ namespace Test.BLL.Interfaces
 {
     public interface IAddressServices
     {
-        public Task<AddressDto> CreateAsync(AddressDto entity);
+        public Task<AddressListDto> CreateAsync(AddressListDto entity);
         public Task<AddressDto> DeleteAsync(int id);
-        public Task<AddressDto> UpdateAsync(AddressDto entity);
+        public Task<AddressListDto> UpdateAsync(AddressListDto entity);
         public Task<IEnumerable<AddressListDto>> GetAsync();
         public Task<AddressDto> GetAsync(int id);
         public Task<AddressDto> AddToPersonAsync(AddressToPerson addressAddToPerson);
