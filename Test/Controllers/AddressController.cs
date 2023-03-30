@@ -20,7 +20,7 @@ namespace Test.Controllers
         {
             try
             {
-                return Ok(await _services.Get());
+                return Ok(await _services.GetAsync());
             }
             catch(Exception ex)
             {
@@ -33,7 +33,7 @@ namespace Test.Controllers
         {
             try
             {
-                return Ok(await _services.Get(id));
+                return Ok(await _services.GetAsync(id));
             }
             catch (Exception ex)
             {
@@ -46,7 +46,7 @@ namespace Test.Controllers
         {
             try
             {
-                return Ok(await _services.Create(value));
+                return Ok(await _services.CreateAsync(value));
             }
             catch (Exception ex)
             {
@@ -62,7 +62,7 @@ namespace Test.Controllers
 
             try
             {
-                return Ok(await _services.Update(value));
+                return Ok(await _services.UpdateAsync(value));
             }
             catch (Exception ex)
             {
@@ -75,7 +75,7 @@ namespace Test.Controllers
         {
             try
             {
-                return Ok(await _services.Delete(id));
+                return Ok(await _services.DeleteAsync(id));
             }
             catch (Exception ex)
             {
@@ -84,11 +84,11 @@ namespace Test.Controllers
         }
 
         [HttpPost("AddTo")]
-        public async Task<ActionResult<AddressDto>> AddTo(AddressAddToPerson value)
+        public async Task<ActionResult<AddressDto>> AddTo(AddressToPerson value)
         {
             try
             {
-                return Ok(await _services.AddToPerson(value));
+                return Ok(await _services.AddToPersonAsync(value));
             }
             catch (Exception ex)
             {
@@ -101,7 +101,33 @@ namespace Test.Controllers
         {
             try
             {
-                return Ok(await _services.CreateWithPerson(value));
+                return Ok(await _services.CreateWithPersonAsync(value));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut("RemovePersons")]
+        public async Task<ActionResult<AddressDto>> RemovePersons(AddressPersonsDto value)
+        {
+            try
+            {
+                return Ok(await _services.RemoveFromAddressAsync(value.AddressId, value.PersonsId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut("AddRangePersons")]
+        public async Task<ActionResult<AddressDto>> AddRangePersons(AddressPersonsDto value)
+        {
+            try
+            {
+                return Ok(await _services.AddPersonsRangeAsync(value.AddressId, value.PersonsId));
             }
             catch (Exception ex)
             {

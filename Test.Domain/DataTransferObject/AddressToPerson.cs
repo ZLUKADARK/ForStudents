@@ -1,6 +1,6 @@
 ﻿namespace Test.Domain.DataTransferObject
 {
-    public class AddressAddToPerson
+    public class AddressToPerson
     {
         public int AddressId { get; set; }
         public int PersonId { get; set; }

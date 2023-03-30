@@ -14,7 +14,7 @@ namespace Test.DLL.Repositories
             _db = db;
         }
 
-        public async Task<SocialClass> AddToPerson(SocialClass social, Person person)
+        public async Task<SocialClass> AddToPersonAsync(SocialClass social, Person person)
         {
             social.Person = new List<Person> { person };
             try
@@ -29,7 +29,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<SocialClass> Create(SocialClass entity)
+        public async Task<SocialClass> CreateAsync(SocialClass entity)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<SocialClass> Delete(int id)
+        public async Task<SocialClass> DeleteAsync(int id)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<IEnumerable<SocialClass>> Get()
+        public async Task<IEnumerable<SocialClass>> GetAsync()
         {
             try
             {
@@ -74,7 +74,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<SocialClass> Get(int id)
+        public async Task<SocialClass> GetAsync(int id)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<SocialClass> Update(SocialClass entity)
+        public async Task<SocialClass> UpdateAsync(SocialClass entity)
         {
             try
             {

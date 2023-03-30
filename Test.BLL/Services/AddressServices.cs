@@ -2,9 +2,6 @@
 using Test.DLL.Interfaces;
 using Test.Domain.DataTransferObject;
 using Test.Domain.Entities;
-using System.Linq;
-using System.Net;
-using Test.DLL.Repositories;
 
 namespace Test.BLL.Services
 {
@@ -19,13 +16,43 @@ namespace Test.BLL.Services
             _personRepository = personRepository;
         }
 
-        public async Task<AddressDto> AddToPerson(AddressAddToPerson addressAddToPerson)
+        public async Task<AddressDto> AddPersonsRangeAsync(int addressId, List<int> persinsId)
         {
             try
             {
-                var result = await _repository.AddToPerson(
-                    await _repository.Get(addressAddToPerson.AddressId),
-                    await _personRepository.Get(addressAddToPerson.PersonId));
+                var result = await _repository.AddPersonsRangeAsync( await _repository.GetAsync(addressId), persinsId);
+                return new AddressDto
+                {
+                    Id = result.Id,
+                    NumberOfApartment= result.NumberOfApartment,
+                    City = result.City,
+                    Country = result.Country,
+                    District = result.District,
+                    Home = result.Home,
+                    Person = (from p in result.Person select 
+                              new PersonDtoList
+                              {
+                                  Id = p.Id,
+                                  FirstName = p.FirstName,
+                                  LastName = p.LastName,
+                                  MiddleName = p.MiddleName,
+                                  SocialClassId = p.SocialClassId,
+                              }).ToList()
+                };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<AddressDto> AddToPersonAsync(AddressToPerson addressAddToPerson)
+        {
+            try
+            {
+                var result = await _repository.AddToPersonAsync(
+                    await _repository.GetAsync(addressAddToPerson.AddressId),
+                    await _personRepository.GetAsync(addressAddToPerson.PersonId));
                 return new AddressDto 
                 { 
                     Id = result.Id,
@@ -51,7 +78,7 @@ namespace Test.BLL.Services
             }
         }
 
-        public async Task<AddressDto> Create(AddressDto entity)
+        public async Task<AddressDto> CreateAsync(AddressDto entity)
         {
             var address = new Address 
             { 
@@ -62,7 +89,7 @@ namespace Test.BLL.Services
                 District = entity.District,
                 Home = entity.Home,
             };
-            var result = await _repository.Create(address);
+            var result = await _repository.CreateAsync(address);
             return new AddressDto
             {
                 Id = result.Id,
@@ -74,7 +101,7 @@ namespace Test.BLL.Services
             };
         }
 
-        public async Task<AddressDto> CreateWithPerson(AddressDto entity)
+        public async Task<AddressDto> CreateWithPersonAsync(AddressDto entity)
         {
             try
             {
@@ -95,7 +122,7 @@ namespace Test.BLL.Services
                                   SocialClassId = person.SocialClassId,
                               }).ToList()
                 };
-                var result = await _repository.CreateWithPersons(address);
+                var result = await _repository.CreateWithPersonsAsync(address);
                 return new AddressDto
                 {
                     Id = result.Id,
@@ -122,9 +149,9 @@ namespace Test.BLL.Services
             }
         }
 
-        public async Task<AddressDto> Delete(int id)
+        public async Task<AddressDto> DeleteAsync(int id)
         {
-            var result = await _repository.Delete(id);
+            var result = await _repository.DeleteAsync(id);
             return new AddressDto
             {
                 Id = result.Id,
@@ -136,9 +163,9 @@ namespace Test.BLL.Services
             };
         }
 
-        public async Task<IEnumerable<AddressListDto>> Get()
+        public async Task<IEnumerable<AddressListDto>> GetAsync()
         {
-            var results = await _repository.Get();
+            var results = await _repository.GetAsync();
             return (from result in results select
                    new AddressListDto
                    {
@@ -151,9 +178,9 @@ namespace Test.BLL.Services
                    }).ToList();
         }
 
-        public async Task<AddressDto> Get(int id)
+        public async Task<AddressDto> GetAsync(int id)
         {
-            var result = await _repository.Get(id);
+            var result = await _repository.GetAsync(id);
             return new AddressDto
             {
                 Id = result.Id,
@@ -174,7 +201,38 @@ namespace Test.BLL.Services
             };
         }
 
-        public async Task<AddressDto> Update(AddressDto entity)
+        public async Task<AddressDto> RemoveFromAddressAsync(int addressId, List<int> persinsId)
+        {
+            try
+            {
+                var result = await _repository.RemoveFromPersonAsync(await _repository.GetAsync(addressId), persinsId);
+                return new AddressDto
+                {
+                    Id = result.Id,
+                    City = result.City,
+                    Country = result.Country,
+                    District = result.District,
+                    Home = result.Home,
+                    NumberOfApartment = result.NumberOfApartment,
+                    Person = (from p in result.Person
+                              select
+                              new PersonDtoList
+                              {
+                                  Id = p.Id,
+                                  FirstName = p.FirstName,
+                                  LastName = p.LastName,
+                                  MiddleName = p.MiddleName,
+                                  SocialClassId = p.SocialClassId,
+                              }).ToList(),
+                };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<AddressDto> UpdateAsync(AddressDto entity)
         {
             var address = new Address
             {
@@ -185,7 +243,7 @@ namespace Test.BLL.Services
                 District = entity.District,
                 Home = entity.Home,
             };
-            var result = await _repository.Update(address);
+            var result = await _repository.UpdateAsync(address);
             return new AddressDto
             {
                 Id = result.Id,

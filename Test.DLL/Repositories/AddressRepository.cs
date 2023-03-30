@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 using Test.DLL.Data;
 using Test.DLL.Interfaces;
 using Test.Domain.Entities;
@@ -14,7 +15,7 @@ namespace Test.DLL.Repositories
             _db = db;
         }
 
-        public async Task<Address> AddToPerson(Address address, Person person)
+        public async Task<Address> AddToPersonAsync(Address address, Person person)
         {
             try
             {
@@ -30,7 +31,22 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<Address> Create(Address entity)
+        public async Task<Address> RemoveFromPersonAsync(Address address, List<int> personsId)
+        {
+            try
+            {
+                var addressState = await _db.Address.Include(x => x.Person).FirstOrDefaultAsync(x => x.Id == address.Id);
+                addressState.Person.RemoveAll(x => personsId.Contains(x.Id));
+                await _db.SaveChangesAsync();
+                return addressState;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<Address> CreateAsync(Address entity)
         {
             try
             {
@@ -44,7 +60,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<Address> CreateWithPersons(Address address)
+        public async Task<Address> CreateWithPersonsAsync(Address address)
         {
             try
             {
@@ -60,7 +76,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<Address> Delete(int id)
+        public async Task<Address> DeleteAsync(int id)
         {
             try
             {
@@ -79,7 +95,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<IEnumerable<Address>> Get()
+        public async Task<IEnumerable<Address>> GetAsync()
         {
             try
             {
@@ -93,7 +109,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<Address> Get(int id)
+        public async Task<Address> GetAsync(int id)
         {
             try
             {
@@ -108,7 +124,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<Address> Update(Address entity)
+        public async Task<Address> UpdateAsync(Address entity)
         {
             try
             {
@@ -117,6 +133,22 @@ namespace Test.DLL.Repositories
 
                 await _db.SaveChangesAsync();
                 return entity;
+            }
+            catch
+            {
+                throw new Exception();
+            }
+        }
+
+        public async Task<Address> AddPersonsRangeAsync(Address address, List<int> persinsId)
+        {
+            try
+            {
+                var addressState = _db.Entry<Address>(address);
+                addressState.State = EntityState.Modified;
+                addressState.Entity.Person.AddRange(_db.Person.AsNoTracking().Where(x => persinsId.Contains(x.Id)));
+                await _db.SaveChangesAsync();
+                return addressState.Entity;
             }
             catch
             {

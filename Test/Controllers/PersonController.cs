@@ -55,7 +55,7 @@ namespace Test.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<PersonDto>> Put(int id, [FromBody] PersonDtoList value)
+        public async Task<ActionResult<PersonDto>> Put(int id, [FromBody] PersonDto value)
         {
             if(id != value.Id)
                 return BadRequest();
@@ -84,7 +84,7 @@ namespace Test.Controllers
         }
 
         [HttpPost("AddTo")]
-        public async Task<ActionResult<PersonDto>> AddTo(AddressAddToPerson value)
+        public async Task<ActionResult<PersonDto>> AddTo(AddressToPerson value)
         {
             try
             {

@@ -6,9 +6,9 @@ namespace Test.BLL.Interfaces
     {
         public Task<PersonDtoList> Create(PersonDtoList entity);
         public Task<PersonDtoList> Delete(int id);
-        public Task<PersonDto> Update(PersonDtoList entity);
+        public Task<PersonDto> Update(PersonDto entity);
         public Task<IEnumerable<PersonDtoList>> Get();
         public Task<PersonDto> Get(int id);
-        public Task<PersonDto> AddToAddress(AddressAddToPerson addressAddToPerson);
+        public Task<PersonDto> AddToAddress(AddressToPerson addressToPerson);
     }
 }

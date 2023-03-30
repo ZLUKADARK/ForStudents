@@ -21,9 +21,9 @@ namespace Test.BLL.Services
             
             try
             {
-                var result = await _repository.Get(socialClassAddToPerson.SocialClassId);
-                result.Person = new List<Person> { await _personRepository.Get(socialClassAddToPerson.PersonId) };
-                result = await _repository.Create(result);
+                var result = await _repository.GetAsync(socialClassAddToPerson.SocialClassId);
+                result.Person = new List<Person> { await _personRepository.GetAsync(socialClassAddToPerson.PersonId) };
+                result = await _repository.CreateAsync(result);
 
                 return new SocialClassDto
                 {
@@ -54,7 +54,7 @@ namespace Test.BLL.Services
                 AverageIncome = entity.AverageIncome, 
                 Title = entity.Title 
             };
-            var result = await _repository.Create(socialClass);
+            var result = await _repository.CreateAsync(socialClass);
             return new SocialClassDto 
             { 
                 Id = result.Id, 
@@ -65,7 +65,7 @@ namespace Test.BLL.Services
 
         public async Task<SocialClassDto> Delete(int id)
         {
-            var result = await _repository.Delete(id);
+            var result = await _repository.DeleteAsync(id);
             return new SocialClassDto
             {
                 Id = result.Id,
@@ -76,7 +76,7 @@ namespace Test.BLL.Services
 
         public async Task<IEnumerable<SocialClassListDto>> Get()
         {
-            var results = await _repository.Get();
+            var results = await _repository.GetAsync();
             return from result in results select 
                    new SocialClassListDto
                    {
@@ -88,7 +88,7 @@ namespace Test.BLL.Services
 
         public async Task<SocialClassDto> Get(int id)
         {
-            var result = await _repository.Get(id);
+            var result = await _repository.GetAsync(id);
             return new SocialClassDto
             {
                 Id = result.Id,
@@ -114,7 +114,7 @@ namespace Test.BLL.Services
                 AverageIncome = entity.AverageIncome,
                 Title = entity.Title
             };
-            var result = await _repository.Update(socialClass);
+            var result = await _repository.UpdateAsync(socialClass);
             return new SocialClassDto
             {
                 Id = result.Id,

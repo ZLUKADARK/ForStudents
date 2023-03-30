@@ -1,15 +1,18 @@
 ﻿using Test.Domain.DataTransferObject;
+using Test.Domain.Entities;
 
 namespace Test.BLL.Interfaces
 {
     public interface IAddressServices
     {
-        public Task<AddressDto> Create(AddressDto entity);
-        public Task<AddressDto> Delete(int id);
-        public Task<AddressDto> Update(AddressDto entity);
-        public Task<IEnumerable<AddressListDto>> Get();
-        public Task<AddressDto> Get(int id);
-        public Task<AddressDto> AddToPerson(AddressAddToPerson addressAddToPerson);
-        public Task<AddressDto> CreateWithPerson(AddressDto entity);
+        public Task<AddressDto> CreateAsync(AddressDto entity);
+        public Task<AddressDto> DeleteAsync(int id);
+        public Task<AddressDto> UpdateAsync(AddressDto entity);
+        public Task<IEnumerable<AddressListDto>> GetAsync();
+        public Task<AddressDto> GetAsync(int id);
+        public Task<AddressDto> AddToPersonAsync(AddressToPerson addressAddToPerson);
+        public Task<AddressDto> CreateWithPersonAsync(AddressDto entity);
+        public Task<AddressDto> RemoveFromAddressAsync(int addressId, List<int> persinsId);
+        public Task<AddressDto> AddPersonsRangeAsync(int addressId, List<int> persinsId);
     }
 }

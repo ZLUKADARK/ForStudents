@@ -14,7 +14,7 @@ namespace Test.DLL.Repositories
             _db = db;
         }
 
-        public async Task<Person> AddToAddress(Person person, Address address)
+        public async Task<Person> AddToAddressAsync(Person person, Address address)
         {
             person.Address.Add(address);
             try
@@ -29,7 +29,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<Person> Create(Person entity)
+        public async Task<Person> CreateAsync(Person entity)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<Person> Delete(int id)
+        public async Task<Person> DeleteAsync(int id)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<IEnumerable<Person>> Get()
+        public async Task<IEnumerable<Person>> GetAsync()
         {
             try
             {
@@ -76,7 +76,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<Person> Get(int id)
+        public async Task<Person> GetAsync(int id)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace Test.DLL.Repositories
             }
         }
 
-        public async Task<Person> Update(Person entity)
+        public async Task<Person> UpdateAsync(Person entity)
         {
             try
             {

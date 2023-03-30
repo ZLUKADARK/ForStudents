@@ -16,13 +16,13 @@ namespace Test.BLL.Services
             _addressRepository = addressRepository;
         }
 
-        public async Task<PersonDto> AddToAddress(AddressAddToPerson addressAddToPerson)
+        public async Task<PersonDto> AddToAddress(AddressToPerson addressToPerson)
         {
             try
             {
-                var result = await _repository.AddToAddress(
-                    await _repository.Get(addressAddToPerson.PersonId),
-                    await _addressRepository.Get(addressAddToPerson.AddressId));
+                var result = await _repository.AddToAddressAsync(
+                    await _repository.GetAsync(addressToPerson.PersonId),
+                    await _addressRepository.GetAsync(addressToPerson.AddressId));
                 return new PersonDto
                 {
                     Id = result.Id,
@@ -59,7 +59,7 @@ namespace Test.BLL.Services
                 MiddleName = entity.LastName,
                 SocialClassId = entity.SocialClassId,
             };
-            var result = await _repository.Create(person);
+            var result = await _repository.CreateAsync(person);
             return new PersonDtoList
             {
                 Id = result.Id,
@@ -72,7 +72,7 @@ namespace Test.BLL.Services
 
         public async Task<PersonDtoList> Delete(int id)
         {
-            var result = await _repository.Delete(id);
+            var result = await _repository.DeleteAsync(id);
             return new PersonDtoList
             {
                 Id = result.Id,
@@ -85,7 +85,7 @@ namespace Test.BLL.Services
 
         public async Task<IEnumerable<PersonDtoList>> Get()
         {
-            var result = await _repository.Get();
+            var result = await _repository.GetAsync();
             return from results in result
                    select new PersonDtoList
                    {
@@ -99,7 +99,7 @@ namespace Test.BLL.Services
 
         public async Task<PersonDto> Get(int id)
         {
-            var result = await _repository.Get(id);
+            var result = await _repository.GetAsync(id);
             return new PersonDto
             {
                 Id = result.Id,
@@ -126,7 +126,7 @@ namespace Test.BLL.Services
             };
         }
 
-        public async Task<PersonDto> Update(PersonDtoList entity)
+        public async Task<PersonDto> Update(PersonDto entity)
         {
             var person = new Person
             {
@@ -136,7 +136,7 @@ namespace Test.BLL.Services
                 MiddleName = entity.LastName,
                 SocialClassId = entity.SocialClassId,
             };
-            var result = await _repository.Update(person);
+            var result = await _repository.UpdateAsync(person);
             return new PersonDto
             {
                 Id = result.Id,
@@ -161,11 +161,6 @@ namespace Test.BLL.Services
                 MiddleName = result.MiddleName,
                 SocialClassId = result.SocialClassId,
             };
-        }
-
-        public Task<PersonDto> Update(PersonDto entity)
-        {
-            throw new NotImplementedException();
         }
     }
 }
